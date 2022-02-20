@@ -6,7 +6,7 @@
 <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
 
 <div id="app">
-  <hello />
+  <hello></hello>
 </div>
 
 <script>
@@ -23,7 +23,7 @@ let Counter = {
   },
   methods: {
     increase() {
-      if (this.count < 100) this.count++
+      if (this.count < 99) this.count++
     },
     decrease() {
       if (this.count > 0) this.count--
