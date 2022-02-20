@@ -1,0 +1,156 @@
+
+<script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+
+<div id="v-model-basic">
+  <input v-model="message" placeholder="edit me" />
+  <p>Message is: {{ message }}</p>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      message: ''
+    }
+  }
+}).mount('#v-model-basic')
+</script>
+
+<div id="v-model-textarea">
+  <span>Multiline message is:</span>
+  <p style="white-space: pre-line;">{{ message }}</p>
+  <br />
+  <textarea v-model="message" placeholder="add multiple lines"></textarea>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      message: ''
+    }
+  }
+}).mount('#v-model-textarea')
+</script>
+
+<div id="v-model-checkbox">
+  <input type="checkbox" id="checkbox" v-model="checked" />
+  <label for="checkbox">{{ checked }}</label>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      checked: false
+    }
+  }
+}).mount('#v-model-checkbox')
+</script>
+
+<div id="v-model-multiple-checkboxes">
+  <input type="checkbox" id="apple" value="Apple" v-model="checkedFruits" />
+  <label for="apple">Apple</label>
+  <input type="checkbox" id="banana" value="Banana" v-model="checkedFruits" />
+  <label for="banana">Banana</label>
+  <input type="checkbox" id="orange" value="Orange" v-model="checkedFruits" />
+  <label for="orange">Orange</label>
+  <br />
+  <span>Checked fruits: {{ checkedFruits }}</span>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      checkedFruits: []
+    }
+  }
+}).mount('#v-model-multiple-checkboxes')
+</script>
+
+<div id="v-model-radiobutton">
+  <input type="radio" id="one" value="One" v-model="picked" />
+  <label for="one">One</label>
+  <br />
+  <input type="radio" id="two" value="Two" v-model="picked" />
+  <label for="two">Two</label>
+  <br />
+  <span>Picked: {{ picked }}</span>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      picked: ''
+    }
+  }
+}).mount('#v-model-radiobutton')
+</script>
+
+<div id="v-model-select">
+  <select v-model="selected">
+    <option disabled value="">Please select one</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select>
+  <span>Selected: {{ selected }}</span>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      selected: ''
+    }
+  }
+}).mount('#v-model-select')
+</script>
+
+<div id="v-model-select-multi">
+  <select v-model="selected" multiple>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select>
+  <br />
+  <span>Selected: {{ selected }}</span>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      selected: ''
+    }
+  }
+}).mount('#v-model-select-multi')
+</script>
+
+<div id="v-model-select-dynamic">
+  <select v-model="selected">
+    <option v-for="option in options" :value="option.value">
+      {{ option.text }}
+    </option>
+  </select>
+  <span>Selected: {{ selected }}</span>
+</div>
+
+<script>
+Vue.createApp({
+  data() {
+    return {
+      selected: 'A',
+      options: [
+        { text: 'One', value: 'A' },
+        { text: 'Two', value: 'B' },
+        { text: 'Three', value: 'C' }
+      ]
+    }
+  }
+}).mount('#v-model-select-dynamic')
+</script>
+
+

@@ -1,0 +1,24 @@
+<!--
+Import maps are currently only available in Chromium-based browsers.
+
+Import maps allows control over what URLs get fetched by
+JavaScript `import` statements and `import()` expressions.
+
+@see https://caniuse.com/import-maps
+-->
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+  }
+}
+</script>
+
+<div id="app"></div>
+
+<script type="module">
+import { createApp } from 'vue'
+import MyComponent from './hello-3.js'
+
+createApp(MyComponent).mount('#app')
+</script>
