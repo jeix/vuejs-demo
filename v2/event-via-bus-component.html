@@ -22,6 +22,14 @@ let Counter = {
       return (count < 10 ? '0' : '') + count
     }
   },
+  created() {
+    bus.$on('increase', delta => {
+      this.increase(delta)
+    })
+    bus.$on('decrease', delta => {
+      this.decrease(delta)
+    })
+  },
   methods: {
     increase(delta) {
       let count = this.count + delta;
@@ -35,14 +43,6 @@ let Counter = {
     }
   },
   template: /*html*/`<div><span>{{ count | formal }}</span></div>`,
-  created() {
-    bus.$on('increase', delta => {
-      this.increase(delta)
-    })
-    bus.$on('decrease', delta => {
-      this.decrease(delta)
-    })
-  },
 };
 
 let RemoteController = {
@@ -75,6 +75,9 @@ let bus = new Vue();
 
 let app = new Vue({
   el: '#app',
-  components: { Counter, RemoteController },
+  components: {
+    Counter,
+    RemoteController
+  },
 });
 </script>

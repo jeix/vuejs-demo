@@ -58,15 +58,14 @@ let Counter = {
         else this.count = 0;
       }
     },
-    decrease(delta) {
-      
-    }
+  },
+  components: {
+    UpDown
   },
   template: /*html*/`<div>
       <span>{{ count | formal }}</span>
       <up-down :delta="3" v-on:change="change"></up-down>
     </div>`,
-  components: { UpDown },
 };
 
 let app = new Vue({

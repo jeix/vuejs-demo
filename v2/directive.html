@@ -10,7 +10,7 @@
 </div>
 
 <script>
-let number = {
+let NumberInput = {
   bind(el, binding) {
     el.addEventListener('keypress', function (evt) {
       var c = evt.keyCode || evt.which;
@@ -48,17 +48,21 @@ let Counter = {
       if (this.count > 0) this.count--
     }
   },
+  directives: {
+    number: NumberInput,
+  },
   template: /*html*/`<div>
       <input v-number v-model="count">
       <button @click="decrease">-</button>
       <span>{{ count | formal }}</span>
       <button @click="increase">+</button>
     </div>`,
-  directives: { number }
 };
 
 let app = new Vue({
   el: '#app',
-  components: { Counter },
+  components: {
+    Counter
+  },
 });
 </script>

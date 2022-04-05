@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!--<script src="https://unpkg.com/vuex"></script>-->
+<script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+
+<div id="app">
+    <demo></demo>
+</div>
+
+<script>
+
+function encomma(s) {
+	return (s || '').replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+}
+function decomma(s) {
+	return (s || '').replace(/,/g, '');
+}
+
+let NumberInput = {
+    bind(el, binding) {
+        let {vm} = binding.value;
+        el.addEventListener('focus', function (evt) {
+            console.log('focus', evt.target.id, evt.target.value);
+            vm.$nextTick(() => {
+                console.log('post', 'focus', evt.target.id, evt.target.value);
+                el.value = decomma(el.value);
+            });
+        });
+        el.addEventListener('blur', function (evt) {
+            console.log('blur', evt.target.id, evt.target.value);
+            vm.$nextTick(() => {
+                console.log('post', 'blur', evt.target.id, evt.target.value);
+                el.value = encomma(el.value);
+            });
+        });
+        el.addEventListener('keypress', function (evt) {
+            var c = evt.keyCode || evt.which;
+            if (c != 46 && c < 48 || 57 < c) {
+                evt.preventDefault();
+            }
+        });
+        el.addEventListener('keyup', function (evt) {
+            var c = evt.keyCode || evt.which;
+            if (c != 46 && c < 48 || (57 < c && c < 95) || 105 < c) { // 0-to-9 48~57, numeric key 0-to-9 95~105
+                evt.preventDefault();
+            }
+        });
+    },
+    inserted(el, binding) {
+        el.style.textAlign = 'right';   
+        el.value = encomma(el.value);
+    },
+    //update(el, binding) {},
+};
+
+let Demo = {
+    data() {
+        return {
+            nums: [1000, 1000],
+        }
+    },
+    methods: {
+        onchange(evt) {
+            console.log('change', evt.target.id, evt.target.value);
+            let i = Number(evt.target.id.slice(1));
+            let v = Number(decomma(evt.target.value));
+            if (v % 1000) {
+                evt.target.value = this.nums[i];
+                return;
+            }
+            (function work() {
+                let sum = 0;
+                for (let i = 0; i < 50_000_000; i++) {
+                    sum += i;
+                }
+                console.log(sum);
+            })();
+            //setTimeout(() => {
+                this.nums[i] = v * 2;
+                this.nums.splice();
+            //}, 50);
+        },
+    },
+    directives: {
+        number: NumberInput,
+    },
+    template: /*html*/`<div>
+        <div v-for="(num, ix) in nums">
+            <input :id="'n'+ix" :value="num"
+                    v-number="{vm:_self}" style="width: 40px"
+                    @change="onchange">
+        </div>
+    </div>`,
+};
+
+let app = new Vue({
+  el: '#app',
+  components: {
+    Demo
+  },
+});
+</script>
