@@ -2,7 +2,7 @@
 // 단순 입력 디렉티브
 // 포커스 인/아웃에 따른 디스플레이 포맷 변화 없고
 // 에러/포커스 하이라이트만 제어하면 되는 경우
-
+```
 var fp_directive_input = {
     bind: function (el) {
         el.addEventListener('focus', function (evt) {
@@ -33,11 +33,12 @@ var fp_directive_input = {
         });
     }
 };
+```
 
 // 숫자 입력 디렉티브
 // - format : 'no' 포커스 인/아웃에 따른 디스플레이 포맷 처리 안함
 // - zero : 포커스 인/아웃에 따른 디스플레이 포맷 처리 시 0일 때 표시할 값
-
+```
 var fp_directive_number = {
     bind: function (el, binding) {
         var opt = binding.value || {format:'yes',zero:''};
@@ -100,9 +101,11 @@ var fp_directive_number = {
         }
     },
 };
+```
 
 // 날짜 입력 디렉티브
 // - format : 'no' 포커스 인/아웃에 따른 디스플레이 포맷 처리 안함
+```
 var fp_directive_date = {
     bind: function (el, binding) {
         var opt = binding.value || {format:'yes'};
@@ -134,3 +137,4 @@ var fp_directive_date = {
         }
     },
 };
+```
