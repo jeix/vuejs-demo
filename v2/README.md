@@ -15,24 +15,24 @@ v-model.trim="foobar"
 @click.stop.prevent="handler"
 ```
 
+### Reactivity
+- [reactivity](./reactivity.html)
+
+### Events
 - [event-from-child](./event-from-child.html)
 - [event-via-bus-component](./event-via-bus-component.html)
 - [event-via-vuex](./event-via-vuex.html)
 
-
-
+### Mixins, Directives, Plugins
 - [mixin](./mixin.html)
 - [directive](./directive.html)
 - [plugin](./plugin.html)
-- [reactivity](./reactivity.html)
 
-
-
+#### 
 - [directive-2](./directive-2.html)
 - [plugin-2](./plugin-2.html)
 
-
-
+#### 
 - [x-case-directive](./x-case-directive.md)
 
 :wq
