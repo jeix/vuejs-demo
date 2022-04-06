@@ -20,14 +20,17 @@ v-model.trim="foobar"
 - [event-via-vuex](./event-via-vuex.html)
 
 
+
 - [mixin](./mixin.html)
 - [directive](./directive.html)
 - [plugin](./plugin.html)
 - [reactivity](./reactivity.html)
 
 
+
 - [directive-2](./directive-2.html)
 - [plugin-2](./plugin-2.html)
+
 
 
 - [x-case-directive](./x-case-directive.md)
