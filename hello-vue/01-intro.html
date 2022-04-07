@@ -1,8 +1,12 @@
 
 <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
 
+<hr><!--#############################-->
+
+<h3><code>createApp(</code>App<code>)</code>.<code>mount(</code>#app<code>)</code></h3>
+
 <div id="counter">
-  Counter: {{counter}}
+  Counter: <button @click="increase">{{counter}}</button>
 </div>
 
 <script>
@@ -14,13 +18,22 @@ const Counter = {
   },
   mounted() {
     setInterval(() => {
-      this.counter++
+      this.increase()
     }, 1000)
+  },
+  methods: {
+    increase() {
+      this.counter++
+    }
   }
 }
 
 const vm1 = Vue.createApp(Counter).mount('#counter')
 </script>
+
+<hr><!--#############################-->
+
+<h3>bind attribute</h3>
 
 <div id="bind-attribute">
   <span v-bind:title="message">
@@ -39,6 +52,10 @@ const AttributeBinding = {
 
 const vm2 = Vue.createApp(AttributeBinding).mount('#bind-attribute')
 </script>
+
+<hr><!--#############################-->
+
+<h3>event handling</h3>
 
 <div id="event-handling">
   <p>{{ message }}</p>
@@ -65,6 +82,10 @@ const EventHandling = {
 const vm3 = Vue.createApp(EventHandling).mount('#event-handling')
 </script>
 
+<hr><!--#############################-->
+
+<h3>two-way binding</h3>
+
 <div id="two-way-binding">
   <p>{{ message }}</p>
   <input v-model="message" />
@@ -81,6 +102,10 @@ const TwoWayBinding = {
 
 const vm4 = Vue.createApp(TwoWayBinding).mount('#two-way-binding')
 </script>
+
+<hr><!--#############################-->
+
+<h3>conditional rendering</h3>
 
 <div id="conditional-rendering">
   <span v-if="seen">이제 나를 볼수 있어요</span>
@@ -103,6 +128,10 @@ const ConditionalRendering = {
 
 let vm5 = Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
 </script>
+
+<hr><!--#############################-->
+
+<h3>list rendering</h3>
 
 <div id="list-rendering">
   <ol>
@@ -127,6 +156,10 @@ const ListRendering = {
 
 const vm6 = Vue.createApp(ListRendering).mount('#list-rendering')
 </script>
+
+<hr><!--#############################-->
+
+<h3>components</h3>
 
 <div id="components-app">
   <ol>
@@ -161,4 +194,6 @@ app.component('todo-item', {
 const vm7 = app.mount('#components-app');
 </script>
 
+<hr><!--#############################-->
 
+:wq

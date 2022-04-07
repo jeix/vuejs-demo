@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<!--<script src="https://unpkg.com/vue@3"></script>-->
+<script src="https://unpkg.com/vue@3.2.31/dist/vue.global.js"></script>
+
+<div id="app">
+  <tester></tester>
+</div>
+
+<script>
+let Tester = {
+    data() {
+        return {
+            object: {},
+            array: [
+                {x:'foo', y:42},
+                {x:'bar', y:43},
+                {x:'qux', y:44},
+            ],
+            otemp: undefined,
+            atemp: undefined,
+        }
+    },
+    watch: {
+        object(newDog, oldDog) {
+            console.log('watch', 'object');
+            console.log('old', JSON.stringify(oldDog));
+            console.log('new', JSON.stringify(newDog));
+        },
+        array(newDog, oldDog) {
+            console.log('watch', 'array');
+            console.log('old', JSON.stringify(oldDog));
+            console.log('new', JSON.stringify(newDog));
+        },
+    },
+    methods: {
+        test() {
+            /*
+            - vm.obj = {x,y}                    // yes
+            - vm.obj.z = 'apple'                // no
+            - vm.$set(vm.obj, 'z', 'apple')     // yes — if property added/deleted
+            - vm.obj = vm.obj                   // no
+            - vm.obj = {...vm.obj}              // yes — BUT not identical
+            - vm.obj._ = 0;
+              vm.$delete(vm.obj, '_')           // yes
+
+            - vm.arr[0] = {x,y}           // no
+            - vm.$set(vm.arr, 0, {x,y})   // yes
+            - vm.arr = vm.arr             // no
+            - vm.arr = [...vm.arr]        // yes — BUT not identical
+            - vm.arr.splice()             // yes
+            //*/
+            this.test0a();
+        },
+        test0a() {
+            console.log('### 0a');
+            let object = {};
+            this.object = object;
+            console.assert(this.object !== object); // this.object is proxy
+            object.x = 'zzz';
+            // watch object
+            // old {}
+            // new {"x":"zzz"}
+            this.$nextTick(this.test0b);
+        },
+        test0b() {
+            console.log('### 0b');
+            let object = {};
+            this.object = object;
+            console.log('this.object', JSON.stringify(this.object));
+                // this.object {}
+            console.assert(this.object !== object); // this.object is proxy
+            this.object.x = 'xxx';
+            console.log('object', JSON.stringify(object));
+                // object {"x":"xxx"}
+            // watch object
+            // old {"x":"zzz"} -- !!!
+            // new {"x":"xxx"}
+            this.$nextTick(this.test1);
+        },
+        test1() {
+            console.log('### 1');
+            let object = this.object;
+            console.assert(object === this.object);
+            this.object = this.array[0];
+            console.assert(this.object !== object);
+            console.assert(this.object === this.array[0]);
+            // watch object
+            // old {"x":"xxx"}
+            // new {"x":"foo","y":42}
+            this.$nextTick(this.test2a);
+        },
+        test2a() {
+            console.log('### 2a');
+            this.object.y = 123; // change property
+            console.log('this.object', JSON.stringify(this.object));
+                // this.object {"x":"foo","y":123}
+            // no watch exec
+            this.$nextTick(this.test2b);
+        },
+        test2b() {
+            console.log('### 2b');
+//            this.$set(this.object, 'y', 24);
+            let temp = {...this.object};
+            temp.y = 24;
+            console.log('this.object', JSON.stringify(this.object));
+                // this.object {"x":"foo","y":24}
+            console.assert(this.object !== temp);
+            // no watch exec
+            this.$nextTick(this.test2c);
+        },
+        /*
+        prepare2c() {
+            console.log('### prepare');
+            let temp1 = this.object;
+            let temp2 = this.array;
+            this.array.splice(0, 1, {x:'foo', y:42});
+            this.object = this.array[0];
+            console.assert(this.object !== temp1);
+            console.assert(this.array === temp2);
+            // watch object
+            // old {"x":"foo","y":42,"z":"orange"}
+            // new {"x":"foo","y":42}
+            // watch array
+            // old [{"x":"foo","y":42},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":42},{"x":"bar","y":43},{"x":"qux","y":44}]
+            this.$nextTick(this.test2c);
+        },
+        //*/
+        test2c() {
+            console.log('### 2c');
+            console.assert(this.object === this.array[0]);
+            let temp = this.object;
+//            this.$set(this.object, 'z', 'apple'); // set new property
+            this.object.z = 'apple';
+            console.assert(this.object === temp);
+            // no watch exec
+            this.$nextTick(this.test3a);
+        },
+        test3a() {
+            console.log('### 3a');
+            this.object.z = 'orange';
+            this.object = this.object; // Svelte style
+            // no watch exec
+            this.$nextTick(this.test3b);
+        },
+        test3b() {
+            console.log('### 3b');
+            this.otemp = this.object;
+            this.object.z = 'banana';
+            this.object = {...this.object};
+            console.assert(this.object !== this.otemp); // not identical
+            console.assert(this.object !== this.array[0]);
+            // watch object
+            // old {"x":"foo","y":24,"z":"banana"}
+            // new {"x":"foo","y":24,"z":"banana"}
+            this.$nextTick(this.test3c);
+        },
+        test3c() {
+            console.log('### 3c');
+            let temp = this.object;
+            this.object.z = 'apple';
+            this.object._ = 0;
+//            this.$delete(this.object, '_'); // delete proprty
+            delete this.object._;
+            console.assert(this.object === temp); // identical
+            // no watch exec
+            this.$nextTick(this.test4a);
+        },
+        test4a() {
+            console.log('### 4a');
+            console.assert(this.object !== this.array[0]);
+            this.array[0] = this.object;
+            // no watch exec
+            this.$nextTick(this.test4b);
+        },
+        test4b() {
+            console.log('### 4b');
+            this.otemp = this.array[0];
+//            this.$set(this.array, 0, {x:'foo', y:42});
+            this.array[0] = {x:'foo', y:42};
+            console.assert(this.array[0] !== this.otemp);
+            // no watch exec
+            this.$nextTick(this.test5a);
+        },
+        test5a() {
+            console.log('### 5a');
+            this.array[0].z = 'apple';
+            this.array = this.array; // Svelte style
+            // no watch exec
+            this.$nextTick(this.test5b);
+        },
+        test5b() {
+            console.log('### 5b');
+            this.otemp = this.array[0];
+            this.atemp = this.array;
+            this.array[0].z = 'orange';
+            this.array = [...this.array];
+            console.assert(this.array[0] === this.otemp);
+            console.assert(this.array !== this.atemp); // not identical
+            // watch array
+            // old [{"x":"foo","y":42,"z":"orange"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":42,"z":"orange"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            this.$nextTick(this.test5c);
+        },
+        test5c() {
+            console.log('### 5c');
+            this.otemp = this.array[0];
+            this.atemp = this.array;
+            this.array[0].z = 'banana';
+            this.array.splice();
+            console.assert(this.array[0] === this.otemp);
+            console.assert(this.array === this.atemp);
+            // no watch exec
+        },
+    },
+    template: /*html*/`<div>
+      <button @click="test">Start</button>
+    </div>`,
+}
+let app = Vue.createApp({});
+app.component('tester', Tester);
+app.mount('#app');
+</script>
