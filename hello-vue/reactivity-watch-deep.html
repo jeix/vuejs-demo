@@ -20,23 +20,21 @@ let Tester = {
         }
     },
     watch: {
-        object(newDog, oldDog) {
-            console.log('watch', 'object');
-            console.log('old', JSON.stringify(oldDog));
-            console.log('new', JSON.stringify(newDog));
+        object: {
+            handler(newDog, oldDog) {
+                console.log('watch', 'object');
+                console.log('old', JSON.stringify(oldDog));
+                console.log('new', JSON.stringify(newDog));
+            },
+            deep: true,
         },
-        'object.y'(newDog) {
-            console.log('watch', 'object.y');
-            console.log('new', JSON.stringify(newDog));
-        },
-        'object.z'(newDog) {
-            console.log('watch', 'object.z');
-            console.log('new', JSON.stringify(newDog));
-        },
-        array(newDog, oldDog) {
-            console.log('watch', 'array');
-            console.log('old', JSON.stringify(oldDog));
-            console.log('new', JSON.stringify(newDog));
+        array: {
+            handler(newDog, oldDog) {
+                console.log('watch', 'array');
+                console.log('old', JSON.stringify(oldDog));
+                console.log('new', JSON.stringify(newDog));
+            },
+            deep: true,
         },
     },
     methods: {
@@ -79,20 +77,21 @@ let Tester = {
             // watch object
             // old {"x":"xxx"}
             // new {"x":"foo","y":42}
-            ////////////////////
-            // watch object.y
-            // new 42
             this.$nextTick(this.test2a);
         },
         test2a() {
             console.log('### 2a');
+            console.assert(this.object === this.array[0]);
             this.object.y = 123; // change property
             console.log('this.object', JSON.stringify(this.object));
                 // this.object {"x":"foo","y":123}
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":123},{"x":"bar","y":43},{"x":"qux","y":44}]
+            //  new [{"x":"foo","y":123},{"x":"bar","y":43},{"x":"qux","y":44}]
             ////////////////////
-            // watch object.y
-            // new 123
+            // watch object
+            // old {"x":"foo","y":123}
+            // new {"x":"foo","y":123}
             this.$nextTick(this.test2b);
         },
         test2b() {
@@ -101,18 +100,26 @@ let Tester = {
             this.object.z = 'apple';
             console.log('this.object', JSON.stringify(this.object));
                 // this.object {"x":"foo","y":123,"z":"apple"}
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":123,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":123,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
             ////////////////////
-            // watch object.z
-            // new "apple""
+            // watch object
+            // old {"x":"foo","y":123,"z":"apple"}
+            // new {"x":"foo","y":123,"z":"apple"}
             this.$nextTick(this.test3a);
         },
         test3a() {
             console.log('### 3a');
             this.object.z = 'orange';
             this.object = this.object; // Svelte style
-            // watch object.z
-            // new "orange""
+            // watch array
+            // old [{"x":"foo","y":123,"z":"orange"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":123,"z":"orange"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            ////////////////////
+            // watch object
+            // old {"x":"foo","y":123,"z":"orange"}
+            // new {"x":"foo","y":123,"z":"orange"}
             this.$nextTick(this.test3b);
         },
         test3b() {
@@ -122,12 +129,13 @@ let Tester = {
             this.object = {...this.object};
             console.assert(this.object !== temp); // not identical
             console.assert(this.object !== this.array[0]);
-            // watch object.z
-            // new "banana"
+            // watch array
+            // old [{"x":"foo","y":123,"z":"banana"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":123,"z":"banana"},{"x":"bar","y":43},{"x":"qux","y":44}]
             ////////////////////
             // watch object
-            // old {"x":"foo","y":24,"z":"banana"}
-            // new {"x":"foo","y":24,"z":"banana"}
+            // old {"x":"foo","y":123,"z":"banana"}
+            // new {"x":"foo","y":123,"z":"banana"}
             this.$nextTick(this.test3c);
         },
         test3c() {
@@ -137,17 +145,18 @@ let Tester = {
             this.object._ = 0;
             delete this.object._;
             console.assert(this.object === temp); // identical
-            // no watch exec
-            ////////////////////
-            // watch object.z
-            // new "apple"
+            // watch object
+            // old {"x":"foo","y":123,"z":"apple"}
+            // new {"x":"foo","y":123,"z":"apple"}
             this.$nextTick(this.test4a);
         },
         test4a() {
             console.log('### 4a');
             console.assert(this.object !== this.array[0]);
             this.array[0] = this.object;
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":123,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":123,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
             this.$nextTick(this.test4b);
         },
         test4b() {
@@ -155,14 +164,18 @@ let Tester = {
             let temp = this.array[0];
             this.array[0] = {x:'foo', y:42};
             console.assert(this.array[0] !== temp);
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":42},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":42},{"x":"bar","y":43},{"x":"qux","y":44}]
             this.$nextTick(this.test5a);
         },
         test5a() {
             console.log('### 5a');
             this.array[0].z = 'apple';
             this.array = this.array; // Svelte style
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":42,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":42,"z":"apple"},{"x":"bar","y":43},{"x":"qux","y":44}]
             this.$nextTick(this.test5b);
         },
         test5b() {
@@ -186,7 +199,9 @@ let Tester = {
             this.array.splice();
             console.assert(this.array[0] === temp1);
             console.assert(this.array === temp2);
-            // no watch exec
+            // watch array
+            // old [{"x":"foo","y":42,"z":"banana"},{"x":"bar","y":43},{"x":"qux","y":44}]
+            // new [{"x":"foo","y":42,"z":"banana"},{"x":"bar","y":43},{"x":"qux","y":44}]
         },
     },
     template: /*html*/`<div>

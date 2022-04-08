@@ -60,6 +60,8 @@ const vm2 = Vue.createApp(AttributeBinding).mount('#bind-attribute')
 <div id="event-handling">
   <p>{{ message }}</p>
   <button v-on:click="reverseMessage">Reverse Message</button>
+  <button @click="reverseMessage($event)">foo</button>
+  <button @click="(event)=>reverseMessage(event)">bar</button>
 </div>
 
 <script>
@@ -70,7 +72,8 @@ const EventHandling = {
     }
   },
   methods: {
-    reverseMessage() {
+    reverseMessage(event) {
+      console.log(event.target.tagName);
       this.message = this.message
         .split('')
         .reverse()

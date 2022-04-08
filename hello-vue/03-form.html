@@ -1,6 +1,10 @@
 
 <script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
 
+<a href="https://vuejs.org/guide/essentials/forms.html#basic-usage">Form</a>
+
+<hr><!--#############################-->
+
 <div id="v-model-basic">
   <input v-model="message" placeholder="edit me" />
   <p>Message is: {{ message }}</p>
@@ -15,6 +19,8 @@ Vue.createApp({
   }
 }).mount('#v-model-basic')
 </script>
+
+<hr><!--#############################-->
 
 <div id="v-model-textarea">
   <span>Multiline message is:</span>
@@ -33,6 +39,8 @@ Vue.createApp({
 }).mount('#v-model-textarea')
 </script>
 
+<hr><!--#############################-->
+
 <div id="v-model-checkbox">
   <input type="checkbox" id="checkbox" v-model="checked" />
   <label for="checkbox">{{ checked }}</label>
@@ -47,6 +55,8 @@ Vue.createApp({
   }
 }).mount('#v-model-checkbox')
 </script>
+
+<hr><!--#############################-->
 
 <div id="v-model-multiple-checkboxes">
   <input type="checkbox" id="apple" value="Apple" v-model="checkedFruits" />
@@ -69,6 +79,8 @@ Vue.createApp({
 }).mount('#v-model-multiple-checkboxes')
 </script>
 
+<hr><!--#############################-->
+
 <div id="v-model-radiobutton">
   <input type="radio" id="one" value="One" v-model="picked" />
   <label for="one">One</label>
@@ -88,6 +100,8 @@ Vue.createApp({
   }
 }).mount('#v-model-radiobutton')
 </script>
+
+<hr><!--#############################-->
 
 <div id="v-model-select">
   <select v-model="selected">
@@ -109,6 +123,8 @@ Vue.createApp({
 }).mount('#v-model-select')
 </script>
 
+<hr><!--#############################-->
+
 <div id="v-model-select-multi">
   <select v-model="selected" multiple>
     <option>A</option>
@@ -128,6 +144,8 @@ Vue.createApp({
   }
 }).mount('#v-model-select-multi')
 </script>
+
+<hr><!--#############################-->
 
 <div id="v-model-select-dynamic">
   <select v-model="selected">
@@ -153,4 +171,6 @@ Vue.createApp({
 }).mount('#v-model-select-dynamic')
 </script>
 
+<hr><!--#############################-->
 
+:wq
