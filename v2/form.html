@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<!--<script src="https://cdn.jsdelivr.net/npm/vue"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<!--<script src="https://unpkg.com/vuex"></script>-->
+<script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+
+<div id="app">
+  <test-form></test-form>
+</div>
+
+<script>
+let TestForm = {
+data() {
+  return {
+    chk: ['foo'],
+    rad: 'foo',
+    sel: 'foo',
+  }
+},
+template: /*html*/`<div>
+  <p>
+    <label>
+      <input type="checkbox" value="foo" v-model="chk">
+      Foo
+    </label>
+    <label>
+      <input type="checkbox" value="bar" v-model="chk">
+      Bar
+    </label>
+    <label>
+      <input type="checkbox" value="qux" v-model="chk">
+      Qux
+    </label>
+  </p>
+  <p>
+    {{chk}}
+  </p>
+  <p>
+    <label>
+      <input type="radio" value="foo" v-model="rad">
+      Foo
+    </label>
+    <label>
+      <input type="radio" value="bar" v-model="rad">
+      Bar
+    </label>
+    <label>
+      <input type="radio" value="qux" v-model="rad">
+      Qux
+    </label>
+  </p>
+  <p>
+    {{rad}}
+  </p>
+  <p>
+    <select v-model="sel">
+      <option value="foo">Foo</option>
+      <option value="bar">Bar</option>
+      <option value="qux">Qux</option>
+    </select>
+  </p>
+  <p>
+    {{sel}}
+  </p>
+</div>`,
+};
+
+let app = new Vue({
+  el: '#app',
+  components: { TestForm },
+});
+</script>

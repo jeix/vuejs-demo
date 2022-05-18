@@ -23,6 +23,9 @@ v-model.trim="foobar"
 - [event-via-bus-component](./event-via-bus-component.html)
 - [event-via-vuex](./event-via-vuex.html)
 
+### Form
+- [form](./form.html)
+
 ### Mixins, Directives, Plugins
 - [mixin](./mixin.html)
 - [directive](./directive.html)
