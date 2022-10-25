@@ -103,6 +103,42 @@ var fp_directive_number = {
 };
 ```
 
+// 심사플랫폼 숫자 입력 디렉티브
+// - format : 'no' 포커스 인/아웃에 따른 디스플레이 포맷 처리 안함
+// - zero : 포커스 인/아웃에 따른 디스플레이 포맷 처리 시 0일 때 표시할 값
+```
+var uwp_directive_number = {
+    bind: function (el, binding) {
+        var opt = _uwp_.mixin({format:'yes',zero:''}, binding.value);
+        if (opt.format != 'no') {
+            el.addEventListener('focus', function (evt) {
+                opt.vm && opt.vm.$nextTick(function () {
+                    var n = _uwp_.number(el.value);
+                    el.value = String(_uwp_.number(el.value) || opt.zero);
+                    el.setSelectionRange(0, el.value.length); // 전체선택
+                });
+            });
+            el.addEventListener('blur', function (evt) {
+                opt.vm && opt.vm.$nextTick(function () {
+                    el.value = _uwp_.n2s(el.value, opt.zero);
+                });
+            });
+        }
+        el.addEventListener('input', function (evt) {
+            var el = evt.target;
+            var val = el.value;
+            var re = /[^0-9]/g;
+            var res = re.exec(val);
+            if (res) {
+                var selection = res.index;
+                el.value = val.replace(re, '');
+                el.setSelectionRange(selection, selection);
+            }
+        });
+    }
+};
+```
+
 // 날짜 입력 디렉티브
 // - format : 'no' 포커스 인/아웃에 따른 디스플레이 포맷 처리 안함
 ```

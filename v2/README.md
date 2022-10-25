@@ -28,8 +28,8 @@ v-model.trim="foobar"
 
 ### Mixins, Directives, Plugins
 - [mixin](./mixin.html)
-- [directive](./directive.html)
-- [plugin](./plugin.html)
+- [directive-1](./directive-1.html)
+- [plugin-1](./plugin-1.html)
 
 #### 
 - [directive-2](./directive-2.html)
