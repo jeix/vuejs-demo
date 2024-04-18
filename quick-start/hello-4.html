@@ -14,16 +14,11 @@ JavaScript `import` statements and `import()` expressions.
 }
 </script>
 
-<div id="app">{{ message }}</div>
+<div id="app"></div>
 
 <script type="module">
 import { createApp } from 'vue'
+import MyComponent from './hello-4-component.js'
 
-createApp({
-  data() {
-    return {
-      message: 'Hello Vue!'
-    }
-  }
-}).mount('#app')
+createApp(MyComponent).mount('#app')
 </script>

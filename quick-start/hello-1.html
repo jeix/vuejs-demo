@@ -1,9 +1,14 @@
+<!--
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+-->
 <script src="https://unpkg.com/vue@3"></script>
 
 <div id="app">{{ message }}</div>
 
 <script>
-Vue.createApp({
+const { createApp } = Vue
+
+/*Vue.*/createApp({
   data() {
     return {
       message: 'Hello Vue!'

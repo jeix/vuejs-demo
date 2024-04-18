@@ -14,9 +14,14 @@ $ npm run build
 ```
 
 ### Without Build Tools
-- [hello-1](./hello-1.html)
-- [hello-2](./hello-2.html)
-- [hello-3](./hello-2.html)
-  - [hello-3-component](./hello-3-component.js)
+- Using the Global Build
+  [hello-1](./hello-1.html)
+- Using the ES Module Build
+  [hello-2](./hello-2.html)
+- Enabling Import maps
+  [hello-3](./hello-3.html)
+- Splitting Up the Modules
+  [hello-4](./hello-4.html)
+  - [hello-4-component](./hello-4-component.js)
 
 :wq
