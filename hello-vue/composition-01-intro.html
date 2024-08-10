@@ -1,5 +1,10 @@
-
-<script src="https://unpkg.com/vue@3.0.11/dist/vue.global.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
+  }
+}
+</script>
 
 <hr><!--#############################-->
 
@@ -9,26 +14,28 @@
   Counter: <button @click="increase">{{counter}}</button>
 </div>
 
-<script>
+<script type="module">
+import { createApp, onMounted, ref } from 'vue'
+
 const Counter = {
-  data() {
-    return {
-      counter: 0
+  setup() {
+    const counter = ref(0)
+    function increase() {
+      counter.value++
     }
-  },
-  mounted() {
-    setInterval(() => {
-      this.increase()
-    }, 1000)
-  },
-  methods: {
-    increase() {
-      this.counter++
+    onMounted(() => {
+      setInterval(() => {
+        increase()
+      }, 1000)
+    })
+    return {
+      counter,
+      increase,
     }
   }
 }
 
-const vm1 = Vue.createApp(Counter).mount('#counter')
+const vm1 = createApp(Counter).mount('#counter')
 </script>
 
 <hr><!--#############################-->
@@ -41,16 +48,19 @@ const vm1 = Vue.createApp(Counter).mount('#counter')
   </span>
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const AttributeBinding = {
-  data() {
+  setup() {
+    const message = ref('이 페이지를 다음 시간에 열었습니다. ' + new Date().toLocaleString())
     return {
-      message: '이 페이지를 다음 시간에 열었습니다. ' + new Date().toLocaleString()
+      message
     }
   }
 }
 
-const vm2 = Vue.createApp(AttributeBinding).mount('#bind-attribute')
+const vm2 = createApp(AttributeBinding).mount('#bind-attribute')
 </script>
 
 <hr><!--#############################-->
@@ -64,25 +74,27 @@ const vm2 = Vue.createApp(AttributeBinding).mount('#bind-attribute')
   <button @click="(event)=>reverseMessage(event)">bar</button>
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const EventHandling = {
-  data() {
-    return {
-      message: 'Hello Vue.js!'
-    }
-  },
-  methods: {
-    reverseMessage(event) {
+  setup() {
+    const message = ref('Hello Vue.js!')
+    function reverseMessage(event) {
       console.log(event.target.tagName);
-      this.message = this.message
+      message.value = message.value
         .split('')
         .reverse()
         .join('')
     }
+    return {
+      message,
+      reverseMessage,
+    }
   }
 }
 
-const vm3 = Vue.createApp(EventHandling).mount('#event-handling')
+const vm3 = createApp(EventHandling).mount('#event-handling')
 </script>
 
 <hr><!--#############################-->
@@ -94,16 +106,19 @@ const vm3 = Vue.createApp(EventHandling).mount('#event-handling')
   <input v-model="message" />
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const TwoWayBinding = {
-  data() {
+  setup() {
+    const message = ref('Hello Vue!')
     return {
-      message: 'Hello Vue!'
+      message
     }
   }
 }
 
-const vm4 = Vue.createApp(TwoWayBinding).mount('#two-way-binding')
+const vm4 = createApp(TwoWayBinding).mount('#two-way-binding')
 </script>
 
 <hr><!--#############################-->
@@ -115,21 +130,23 @@ const vm4 = Vue.createApp(TwoWayBinding).mount('#two-way-binding')
   <button v-on:click="toggle">Toggle Message</button>
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const ConditionalRendering = {
-  data() {
-    return {
-      seen: true
+  setup() {
+    const seen = ref(true)
+    function toggle() {
+      seen.value = ! seen.value
     }
-  },
-  methods: {
-    toggle() {
-      this.seen = ! this.seen;
+    return {
+      seen,
+      toggle,
     }
   }
 }
 
-let vm5 = Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
+let vm5 = createApp(ConditionalRendering).mount('#conditional-rendering')
 </script>
 
 <hr><!--#############################-->
@@ -144,20 +161,23 @@ let vm5 = Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
   </ol>
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const ListRendering = {
-  data() {
+  setup() {
+    const todos = ref([
+      { text: 'Learn JavaScript' },
+      { text: 'Learn Vue' },
+      { text: 'Build something awesome' }
+    ])
     return {
-      todos: [
-        { text: 'Learn JavaScript' },
-        { text: 'Learn Vue' },
-        { text: 'Build something awesome' }
-      ]
+      todos
     }
   }
 }
 
-const vm6 = Vue.createApp(ListRendering).mount('#list-rendering')
+const vm6 = createApp(ListRendering).mount('#list-rendering')
 </script>
 
 <hr><!--#############################-->
@@ -174,20 +194,23 @@ const vm6 = Vue.createApp(ListRendering).mount('#list-rendering')
   </ol>
 </div>
 
-<script>
+<script type="module">
+import { createApp, ref } from 'vue'
+
 const ComponentsApp = {
-  data() {
+  setup() {
+    const groceryList = ref([
+      { id: 0, text: 'Vegetables' },
+      { id: 1, text: 'Cheese' },
+      { id: 2, text: 'Whatever else humans are supposed to eat' }
+    ])
     return {
-      groceryList: [
-        { id: 0, text: 'Vegetables' },
-        { id: 1, text: 'Cheese' },
-        { id: 2, text: 'Whatever else humans are supposed to eat' }
-      ]
+      groceryList
     }
   }
 }
 
-const app = Vue.createApp(ComponentsApp);
+const app = createApp(ComponentsApp);
 
 app.component('todo-item', {
   props: ['todo'],
